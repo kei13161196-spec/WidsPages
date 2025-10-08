@@ -1,231 +1,137 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Company Hub</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#111">
-<style>
-  :root{
-    --gap:14px; --card:#0f0f13; --ink:#e7e7ee; --muted:#9aa0a6; --line:#23232a;
-    --elev: 0 8px 24px rgba(0,0,0,.25);
-    --dur: .4s; --ease: cubic-bezier(.2,.7,.2,1);
-  }
-  html,body{background:#0b0b0f;color:var(--ink);font:16px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  body{margin:24px}
-  header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
-  .logo{font-weight:800;letter-spacing:.2px}
-  .chip{border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer;user-select:none}
-  .chip.pulse{animation:pulse 2.2s var(--ease) infinite}
-  input[type=search]{flex:1 1 360px;background:#111214;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;transition:border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease)}
-  input[type=search]:focus{outline:none;border-color:#3a80ff;box-shadow:0 0 0 4px #3a80ff33}
-  .toolbar{display:flex;gap:8px;align-items:center}
-  .hint{color:var(--muted);font-size:12px}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
-  .tag{position:relative;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:#111214;cursor:pointer;overflow:hidden;transition:transform var(--dur) var(--ease), border-color var(--dur) var(--ease)}
-  .tag.active{outline:2px solid #2f69ff33;border-color:#2f69ff66}
-  .tag:active{transform:scale(.97)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--gap)}
-  .card{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card);display:flex;gap:10px;flex-direction:column;transition:transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease)}
-  .card:hover{transform:translateY(-2px); box-shadow:var(--elev); border-color:#2a2a33}
-  .ttl{font-weight:700;font-size:18px;margin:0}
-  .desc{color:var(--muted);font-size:14px}
-  .badges{display:flex;flex-wrap:wrap;gap:6px}
-  .badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 8px}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .btn{appearance:none;border:1px solid var(--line);background:#121319;color:var(--ink);padding:8px 12px;border-radius:10px;cursor:pointer;transition:transform var(--dur) var(--ease), border-color var(--dur) var(--ease)}
-  .btn:hover{border-color:#3a80ff}
-  .btn:active{transform:translateY(1px)}
-  .btn.primary{border-color:#3a80ff}
-  .fav{margin-left:auto;cursor:pointer;font-size:18px;color:#ffd54a;filter:drop-shadow(0 0 6px rgba(255,213,74,.35))}
-  .section{margin:18px 0}
-  .hero{border:1px solid var(--line);border-radius:16px;padding:18px;background:linear-gradient(135deg,#0f1018,#121522 50%,#0f0f13); overflow:hidden}
-  .hero h1{margin:0 0 8px;font-size:22px}
-  .foot{margin-top:24px;color:var(--muted);font-size:12px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Company Hub</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="./icon-192.png">
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #222;
+      --accent: #0066cc;
+      --card: #fff;
+      --shadow: rgba(0,0,0,0.05);
+      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: "SF Pro Text", "Noto Sans JP", sans-serif;
+      background: var(--bg); color: var(--text);
+      scroll-behavior: smooth;
+    }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; border-bottom: 1px solid #eee;
+    }
+    .logo { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: .5rem; }
+    .hero {
+      text-align: center; padding: 6rem 1rem 4rem;
+      max-width: 800px; margin: 0 auto;
+      animation: fadeUp 1s var(--ease) both;
+    }
+    .hero h1 { font-size: 2.4rem; margin: 0 0 1rem; }
+    .hero p { color: #555; font-size: 1.1rem; }
 
-  /* スケルトン */
-  .skeleton{border:1px solid var(--line);border-radius:16px;padding:14px;background:linear-gradient(90deg,#141419 25%,#1a1b22 37%,#141419 63%);background-size:400% 100%;animation:shimmer 1.2s linear infinite}
-  .sk-title{height:18px;border-radius:6px;margin-bottom:10px;background:#0000}
-  .sk-line{height:12px;border-radius:6px;margin:6px 0;background:#0000}
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px; margin: 0 auto;
+    }
+    h2.sec-title { font-size: 1.6rem; margin-bottom: 2rem; text-align: center; }
 
-  /* キーフレーム */
-  @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 #3a80ff33}70%{box-shadow:0 0 0 12px #3a80ff00}100%{box-shadow:0 0 0 0 #3a80ff00}}
-  @keyframes fadeSlide{0%{opacity:0;transform:translateY(8px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px; box-shadow: 0 4px 10px var(--shadow);
+      padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
+      opacity: 0; transform: translateY(30px);
+      animation: fadeUp .6s var(--ease) forwards;
+    }
+    .card h3 { margin: 0; }
+    .btn {
+      display: inline-block;
+      background: var(--accent); color: #fff;
+      padding: .6rem 1rem; border-radius: 8px;
+      text-decoration: none; text-align: center;
+      transition: opacity .2s;
+    }
+    .btn:hover { opacity: 0.8; }
 
-  /* 低減モーション対応 */
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none!important;transition:none!important}
-  }
-</style>
+    footer {
+      text-align: center; padding: 2rem; color: #777; font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <span class="logo">🏢 Company Hub</span>
-    <span class="chip pulse" id="installPWA" title="ホーム画面に追加">＋インストール</span>
-    <input id="q" type="search" placeholder="検索（例: 経費, 請求, 在庫）" autofocus>
-    <div class="toolbar">
-      <button id="onlyFav" class="btn">★お気に入り</button>
-      <button id="openChecked" class="btn">選択を開く</button>
-      <span class="hint">/ で検索・Enterで開く・↑↓で移動</span>
+    <div class="logo">
+      <img src="./icon-192.png" alt="logo" style="height:24px;"> Company Hub
     </div>
+    <button id="installBtn" style="padding:0.4rem 1rem; border:1px solid #ccc; border-radius:8px; background:#fff; cursor:pointer;">＋インストール</button>
   </header>
 
-  <section class="hero">
-    <h1>社内アプリの入口はここだけ</h1>
-    <div class="desc">部署横断のWebアプリ、マニュアル、申請フォーム、ダッシュボードを一発検索。権限は各アプリ側SSOに委譲。</div>
-  </section>
-
-  <div class="section">
-    <div class="tags" id="tags"></div>
-    <div class="grid" id="grid"></div>
+  <div class="hero">
+    <h1>あなたの会社のすべてのWebアプリをここに。</h1>
+    <p>もうメールやブックマークを探す必要はありません。ワンクリックで全ての業務アプリにアクセスできます。</p>
   </div>
 
-  <div class="foot">© Company. Powered by GitHub Pages + Google Sheets</div>
+  <section id="apps">
+    <h2 class="sec-title">アプリ一覧</h2>
+    <div class="grid" id="grid"></div>
+  </section>
 
-<script>
-// ---- テストデータ（ここだけで動きます） ----
-const TEST_APPS = [
-  { name: "経費精算", url: "https://example.com/expense", desc: "経費申請と承認フロー", tags: ["経理","申請"] },
-  { name: "勤怠管理", url: "https://example.com/attendance", desc: "出退勤の登録・承認", tags: ["人事"] },
-  { name: "在庫ダッシュボード", url: "https://example.com/inventory", desc: "在庫・入出庫の可視化", tags: ["物流","ダッシュボード"] },
-  { name: "請求書発行", url: "https://example.com/invoice", desc: "見積・請求書の作成と送付", tags: ["営業","経理"] }
-];
+  <footer>© 2025 Company Hub</footer>
 
+  <script>
+    const TEST_APPS = [
+      { name: "経費精算", url: "https://example.com/expense", desc: "経費申請と承認フロー", tags: ["経理","申請"] },
+      { name: "勤怠管理", url: "https://example.com/attendance", desc: "出退勤の登録・承認", tags: ["人事"] },
+      { name: "在庫ダッシュボード", url: "https://example.com/inventory", desc: "在庫・入出庫の可視化", tags: ["物流","ダッシュボード"] },
+      { name: "請求書発行", url: "https://example.com/invoice", desc: "見積・請求書の作成と送付", tags: ["営業","経理"] }
+    ];
 
-const $ = (q,el=document)=>el.querySelector(q);
-const $$ = (q,el=document)=>[...el.querySelectorAll(q)];
-let apps=[]; let activeTags=new Set(); let onlyFav=false; let selected=-1;
-const favKey="hub:favs"; const getFavs=()=>new Set(JSON.parse(localStorage.getItem(favKey)||"[]"));
-const setFavs=s=>localStorage.setItem(favKey,JSON.stringify([...s]));
+    const grid = document.getElementById("grid");
+    TEST_APPS.forEach((app,i)=>{
+      const card=document.createElement("div");
+      card.className="card";
+      card.style.animationDelay = `${i*100}ms`;
+      card.innerHTML = `
+        <h3>${app.name}</h3>
+        <p>${app.desc}</p>
+        <a href="${app.url}" target="_blank" class="btn">開く</a>`;
+      grid.appendChild(card);
+    });
 
-/* ---- データ取得 + スケルトン ---- */
-function showSkeleton(count=6){
-  const wrap=$("#grid"); wrap.innerHTML="";
-  for(let i=0;i<count;i++){
-    const s=document.createElement("div");
-    s.className="skeleton";
-    s.innerHTML=`<div class="sk-title"></div>
-                 <div class="sk-line" style="width:70%"></div>
-                 <div class="sk-line" style="width:50%"></div>
-                 <div class="sk-line" style="width:30%"></div>`;
-    wrap.appendChild(s);
-  }
-}
-async function fetchCSV(){
-  showSkeleton();
-  const res = await fetch(CSV_URL,{cache:"no-store"});
-  const text = await res.text();
-  return text.split(/\r?\n/).map(r=>r.split(","));
-}
-function parseApps(rows){
-  const headers = rows.shift().map(h=>h.trim());
-  const idx={name:headers.indexOf("Name"),url:headers.indexOf("URL"),
-             desc:headers.indexOf("Description"),tags:headers.indexOf("Tags")};
-  return rows.filter(r=>r[idx.name]&&r[idx.url]).map(r=>({
-    name:r[idx.name].trim(),
-    url:r[idx.url].trim(),
-    desc:(r[idx.desc]||"").trim(),
-    tags:(r[idx.tags]||"").split(/\s*,\s*/).filter(Boolean)
-  }));
-}
-
-/* ---- UIロジック ---- */
-function uniqTags(list){const s=new Set(); list.forEach(a=>a.tags.forEach(t=>s.add(t))); return [...s].sort((a,b)=>a.localeCompare(b,'ja'));}
-function renderTags(){
-  const wrap=$("#tags"); wrap.innerHTML="";
-  uniqTags(apps).forEach(t=>{
-    const b=document.createElement("button");
-    b.className="tag"+(activeTags.has(t)?" active":"");
-    b.textContent=t;
-    b.onclick=(e)=>{ ripple(e); activeTags.has(t)?activeTags.delete(t):activeTags.add(t); smartRender(); };
-    wrap.appendChild(b);
-  });
-}
-function match(a,q){const hay=(a.name+" "+a.desc+" "+a.tags.join(" ")).toLowerCase(); return hay.includes(q);}
-function filtered(){
-  const favs=getFavs(); const q=$("#q").value.trim().toLowerCase();
-  return apps.filter(a=>{
-    if (onlyFav && !favs.has(a.url)) return false;
-    if (activeTags.size && !a.tags.some(t=>activeTags.has(t))) return false;
-    return !q || match(a,q);
-  });
-}
-
-/* ---- アニメ付きレンダリング ---- */
-function render(){
-  const list=filtered(); const favs=getFavs(); const wrap=$("#grid"); wrap.innerHTML="";
-  list.forEach((a,i)=>{
-    const card=document.createElement("div"); card.className="card"; card.tabIndex=0; card.dataset.index=i;
-    card.style.animation="fadeSlide .4s var(--ease) both"; card.style.animationDelay = `${i*30}ms`;
-    card.innerHTML=`
-      <div class="row">
-        <h3 class="ttl">${a.name}</h3>
-        <span class="fav" title="お気に入り">${favs.has(a.url)?"★":"☆"}</span>
-      </div>
-      <div class="desc">${a.desc||""}</div>
-      <div class="badges">${a.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
-      <div class="row">
-        <a class="btn primary" href="${a.url}" target="_blank" rel="noopener">開く</a>
-        <label class="row" style="gap:6px"><input type="checkbox">選択</label>
-      </div>`;
-    card.onclick=e=>{ if(e.target.tagName!=="INPUT" && e.target.tagName!=="A" && !e.target.classList.contains("fav")) window.open(a.url,"_blank","noopener"); };
-    card.querySelector(".fav").onclick=e=>{ e.stopPropagation(); favs.has(a.url)?favs.delete(a.url):favs.add(a.url); setFavs(favs); render(); };
-    wrap.appendChild(card);
-  });
-  selected=Math.min(selected,list.length-1);
-  const cards=$$(".card"); cards.forEach(c=>c.classList.remove("selected"));
-  if (list.length && selected>=0) cards[selected].focus();
-}
-
-/* View Transitions API（対応ブラウザでは滑らかに差し替え） */
-function smartRender(){
-  if (document.startViewTransition){
-    document.startViewTransition(()=>render());
-  }else{
-    render();
-  }
-}
-
-/* タグの波紋エフェクト */
-function ripple(e){
-  const el=e.currentTarget;
-  const r=document.createElement("span");
-  const d=Math.max(el.clientWidth, el.clientHeight);
-  r.style.cssText=`position:absolute;inset:auto;left:${e.offsetX-d/2}px;top:${e.offsetY-d/2}px;width:${d}px;height:${d}px;border-radius:50%;background:#3a80ff33;pointer-events:none;transform:scale(0);opacity:.8;`;
-  el.appendChild(r);
-  r.animate([{transform:"scale(0)",opacity:.8},{transform:"scale(1.6)",opacity:0}],{duration:450,easing:"ease-out"});
-  r.addEventListener("animationend",()=>r.remove());
-  setTimeout(()=>r.remove(),460);
-}
-
-/* ---- イベント類 ---- */
-$("#q").oninput=smartRender;
-$("#onlyFav").onclick=()=>{ onlyFav=!onlyFav; $("#onlyFav").classList.toggle("primary",onlyFav); smartRender(); };
-$("#openChecked").onclick=()=> $$("#grid .card").forEach(c=>{ const a=c.querySelector("a.btn"); const chk=c.querySelector("input[type=checkbox]"); if(chk.checked&&a) window.open(a.href,"_blank","noopener"); });
-
-document.addEventListener("keydown",e=>{
-  const list=filtered();
-  if(e.key==="/" && document.activeElement!==$("#q")) { e.preventDefault(); $("#q").focus(); return; }
-  if(["ArrowDown","j"].includes(e.key)) { e.preventDefault(); selected=Math.min(selected+1,list.length-1); render(); }
-  if(["ArrowUp","k"].includes(e.key))   { e.preventDefault(); selected=Math.max(selected-1,0); render(); }
-  if(e.key==="Enter" && selected>=0){ e.preventDefault(); const a=$$("#grid .card")[selected]?.querySelector("a.btn"); if(a) window.open(a.href,"_blank","noopener"); }
-});
-
-/* PWA install */
-let deferredPrompt=null;
-window.addEventListener("beforeinstallprompt",(e)=>{ e.preventDefault(); deferredPrompt=e; $("#installPWA").style.display="inline-block";});
-$("#installPWA").onclick=async()=>{ if(!deferredPrompt) return; await deferredPrompt.prompt(); deferredPrompt=null; $("#installPWA").classList.remove("pulse"); };
-
-/* 起動 */
-(() => {
-  apps = TEST_APPS;
-  renderTags();
-  smartRender();
-})();
-
-/* Service Worker登録 */
-if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
-</script>
+    // PWAインストール
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.display = 'none';
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') installBtn.style.display = 'none';
+        deferredPrompt = null;
+      }
+    });
+  </script>
 </body>
 </html>
+
