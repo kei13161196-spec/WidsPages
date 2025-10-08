@@ -84,7 +84,14 @@
   <div class="foot">© Company. Powered by GitHub Pages + Google Sheets</div>
 
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/【シートID】/export?format=csv&gid=0"; // ←差し替え
+// ---- テストデータ（ここだけで動きます） ----
+const TEST_APPS = [
+  { name: "経費精算", url: "https://example.com/expense", desc: "経費申請と承認フロー", tags: ["経理","申請"] },
+  { name: "勤怠管理", url: "https://example.com/attendance", desc: "出退勤の登録・承認", tags: ["人事"] },
+  { name: "在庫ダッシュボード", url: "https://example.com/inventory", desc: "在庫・入出庫の可視化", tags: ["物流","ダッシュボード"] },
+  { name: "請求書発行", url: "https://example.com/invoice", desc: "見積・請求書の作成と送付", tags: ["営業","経理"] }
+];
+
 
 const $ = (q,el=document)=>el.querySelector(q);
 const $$ = (q,el=document)=>[...el.querySelectorAll(q)];
@@ -211,9 +218,10 @@ window.addEventListener("beforeinstallprompt",(e)=>{ e.preventDefault(); deferre
 $("#installPWA").onclick=async()=>{ if(!deferredPrompt) return; await deferredPrompt.prompt(); deferredPrompt=null; $("#installPWA").classList.remove("pulse"); };
 
 /* 起動 */
-(async()=>{
-  try{ const rows=await fetchCSV(); apps=parseApps(rows); renderTags(); smartRender(); }
-  catch(e){ alert("アプリ一覧の取得に失敗しました。CSV公開設定を確認してください。"); $("#grid").innerHTML=""; }
+(() => {
+  apps = TEST_APPS;
+  renderTags();
+  smartRender();
 })();
 
 /* Service Worker登録 */
