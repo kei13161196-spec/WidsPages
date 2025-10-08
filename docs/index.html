@@ -8,21 +8,15 @@
 <link rel="icon" href="./icon-192.png">
 <meta name="theme-color" content="#f7f3ee">
 
-<!-- =========================================
-   Theme: サンド×コバルト（Apple感強め）
-   - 太めのタイポ／広い余白
-   - 透過ナビ + ガラス感
-   - セクション毎のダイナミックな登場
-   - カードは大きめ・画像風プレースホルダ
-   ========================================= -->
+<!-- Apple風：くっきりフォント & 滑らかアニメ -->
 <style>
 :root{
-  --bg:#f7f3ee;         /* 背景（温かいサンド） */
-  --ink:#1c232e;        /* 文字 */
-  --muted:#5b6470;      /* サブ文字 */
-  --card:#fff;          /* カード背景 */
-  --line:#e9dfd4;       /* 枠線 */
-  --accent:#2457ff;     /* コバルト */
+  --bg:#f7f3ee;
+  --ink:#1c232e;
+  --muted:#5b6470;
+  --card:#fff;
+  --line:#e9dfd4;
+  --accent:#2457ff;
   --accent-ink:#fff;
   --glass:rgba(255,255,255,.55);
   --shadow:0 20px 50px rgba(28,35,46,.10);
@@ -31,35 +25,49 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;background:var(--bg);color:var(--ink);
-  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"SF Pro Text","Noto Sans JP",Segoe UI,Roboto,Helvetica,Arial;
-  letter-spacing:.02em;
+  font-family:-apple-system,"SF Pro Display","SF Pro Text","Noto Sans JP",Helvetica,Arial,sans-serif;
+  font-feature-settings:"palt";
+  letter-spacing:.01em;
+  scroll-behavior:smooth;
 }
 
-/* ===== Top Nav (ガラス/固定) ===== */
+/* ===== Nav ===== */
 nav{
   position:sticky;top:0;z-index:50;
   backdrop-filter: blur(16px);
   background: color-mix(in srgb, var(--glass), #fff 35%);
   border-bottom:1px solid var(--line);
+  transition:backdrop-filter .4s var(--ease), background .4s var(--ease);
 }
 .nav-inner{
-  max-width:1200px;margin:0 auto;display:flex;gap:14px;align-items:center;justify-content:space-between;
+  max-width:1200px;margin:0 auto;
+  display:flex;gap:14px;align-items:center;justify-content:space-between;
   padding:14px 22px;
 }
 .brand{display:flex;gap:10px;align-items:center;font-weight:800}
 .brand img{height:22px}
 .nav-cta{display:flex;gap:10px;align-items:center}
 .btn-chip{
-  appearance:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;
+  border:1px solid var(--line);
+  background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;
+  transition:all .25s var(--ease);
+}
+.btn-chip:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+  transform:translateY(-2px) scale(1.05);
 }
 .search{
-  flex:1 1 560px;max-width:600px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;
+  flex:1 1 560px;max-width:600px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;padding:10px 14px;
 }
 
-/* ===== Hero（大きな見出し＋サブコピー） ===== */
+/* ===== Hero ===== */
 .hero{
   position:relative;overflow:hidden;
   max-width:1200px;margin:0 auto;padding:80px 22px 40px;
+  text-align:center;
 }
 .hero::before{
   content:"";position:absolute;inset:-30%;
@@ -72,46 +80,57 @@ nav{
   font-weight:800;line-height:1.1;margin:0 0 14px;font-size:clamp(28px,5vw,44px);
   letter-spacing:-.01em;
 }
-.sub{color:var(--muted);font-size:clamp(14px,2.4vw,18px);max-width:820px}
+.sub{color:var(--muted);font-size:clamp(14px,2.4vw,18px);max-width:820px;margin:0 auto}
 
-/* ===== Section wrapper ===== */
+/* ===== Sections ===== */
 section{max-width:1200px;margin:0 auto;padding:36px 22px}
 .sec-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 18px}
 
-/* ===== Feature tiles（Appleの特集ブロック風） ===== */
+/* ===== Features ===== */
 .tiles{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px
 }
 .tile{
-  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--card);
-  box-shadow:var(--shadow);padding:22px;min-height:180px;
+  position:relative;overflow:hidden;
+  border:1px solid var(--line);border-radius:22px;
+  background:var(--card);box-shadow:var(--shadow);
+  padding:22px;min-height:180px;
   transform:translateY(24px);opacity:0;
   animation:tileIn .7s var(--ease) forwards;
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.tile:hover{
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 30px 60px rgba(36,87,255,.15);
 }
 .tile h3{margin:0 0 6px;font-size:20px}
 .tile p{margin:0;color:var(--muted)}
 .tile::after{
   content:"";position:absolute;right:-12%;bottom:-12%;width:220px;height:220px;border-radius:26px;
-  background:linear-gradient(135deg,#dde3ff 0%, #ffffff 55%);filter:blur(2px);
-  transform:rotate(8deg);
+  background:linear-gradient(135deg,#dde3ff 0%, #ffffff 55%);
+  filter:blur(2px);transform:rotate(8deg);
 }
 
-/* ===== App cards（大ぶり、画像風プレースホルダ付き） ===== */
-.grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px
-}
+/* ===== Cards ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
 .card{
-  border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);
-  overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px);opacity:0;
+  border:1px solid var(--line);border-radius:22px;background:var(--card);
+  box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+  transform:translateY(20px);opacity:0;
   animation:cardIn .55s var(--ease) forwards;
-  transition:transform .25s var(--ease);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
 }
-.card:hover{transform:translateY(-4px)}
+.card:hover{
+  transform:translateY(-6px) scale(1.03) rotateX(1deg);
+  box-shadow:0 30px 60px rgba(36,87,255,.15);
+}
 .card .ph{
-  height:160px;background:
-    linear-gradient(180deg,#f5f7ff,#ffffff 60%),
-    repeating-linear-gradient(90deg, #eef2ff 0 2px, transparent 2px 6px);
+  height:160px;
+  background:linear-gradient(180deg,#f5f7ff,#ffffff 60%),
+             repeating-linear-gradient(90deg, #eef2ff 0 2px, transparent 2px 6px);
+  transition:transform .4s var(--ease);
 }
+.card:hover .ph{transform:scale(1.05)}
 .card .body{padding:16px 18px 18px}
 .ttl{margin:0 0 8px;font-weight:800;letter-spacing:-.01em;font-size:20px}
 .desc{margin:0 0 12px;color:var(--muted)}
@@ -119,27 +138,27 @@ section{max-width:1200px;margin:0 auto;padding:36px 22px}
 .badge{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;background:#fafbff}
 .actions{display:flex;gap:10px;align-items:center}
 .btn{
-  appearance:none;border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;text-decoration:none;
-  background:var(--accent);color:var(--accent-ink);font-weight:600;letter-spacing:.02em
+  appearance:none;border:1px solid var(--line);
+  border-radius:12px;padding:10px 14px;
+  cursor:pointer;text-decoration:none;
+  background:var(--accent);color:var(--accent-ink);
+  font-weight:600;letter-spacing:.02em;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn:hover{
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:0 0 0 4px rgba(36,87,255,.15);
 }
 .btn.ghost{background:#fff;color:var(--ink)}
-/* Tilt-ish hover */
-.card:hover .ph{transform:scale(1.02);transition:transform .4s var(--ease)}
-
-/* ===== Reveal animations ===== */
-@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes tileIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-/* ===== Footer ===== */
 footer{color:#7a828f;text-align:center;padding:36px 10px;margin-top:16px;border-top:1px solid var(--line)}
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tileIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
-<!-- ===== NAV ===== -->
 <nav>
   <div class="nav-inner">
     <div class="brand"><img src="./icon-192.png" alt="logo"><span>Company Hub</span></div>
@@ -152,32 +171,29 @@ footer{color:#7a828f;text-align:center;padding:36px 10px;margin-top:16px;border-
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
 <header class="hero">
-  <h1 class="h1">探さない、迷わない。<br>社内アプリの入口を、ひとつに。</h1>
-  <p class="sub">Appleのような静かな美しさと、最短の到達体験。検索・タグ・お気に入り。すべてここから。</p>
+  <h1 class="h1">探さない。迷わない。<br>美しく、効率的に。</h1>
+  <p class="sub">洗練されたUIとスムーズな操作感。全てのWidsアプリを、ひとつのハブに。</p>
 </header>
 
-<!-- ===== FEATURES ===== -->
 <section id="features" class="reveal">
-  <h2 class="sec-title">Company Hub の特徴</h2>
+  <h2 class="sec-title">特徴</h2>
   <div class="tiles">
     <div class="tile" style="animation-delay:40ms">
-      <h3>ワンクリック起動</h3>
-      <p>ブックマークもメールも不要。PWAでホーム画面から即起動。</p>
+      <h3>シームレスアクセス</h3>
+      <p>ホーム画面から即起動。スムーズ体験。</p>
     </div>
     <div class="tile" style="animation-delay:120ms">
-      <h3>近未来UI</h3>
-      <p>ガラス感・余白・大胆なタイポ。軽いアニメで心地よく。</p>
+      <h3>アニメーションUI</h3>
+      <p>ホバー・クリックで柔らかく反応するインタラクション。</p>
     </div>
     <div class="tile" style="animation-delay:200ms">
-      <h3>運用はシートだけ</h3>
-      <p>最終的にはGoogleシート/GASからアプリ一覧を自動反映。</p>
+      <h3>軽快な構成</h3>
+      <p>GitHub Pages + PWA。高速・安全。</p>
     </div>
   </div>
 </section>
 
-<!-- ===== APPS ===== -->
 <section id="apps" class="reveal">
   <h2 class="sec-title">アプリ一覧</h2>
   <div class="grid" id="grid"></div>
@@ -186,7 +202,6 @@ footer{color:#7a828f;text-align:center;padding:36px 10px;margin-top:16px;border-
 <footer>© Company. Powered by GitHub Pages + PWA</footer>
 
 <script>
-/* ================== データ ================== */
 const TEST_APPS = [
   { name: "経費精算", url: "https://example.com/expense",   desc: "経費申請と承認フロー", tags: ["経理","申請"] },
   { name: "勤怠管理", url: "https://example.com/attendance", desc: "出退勤の登録・承認", tags: ["人事"] },
@@ -194,11 +209,9 @@ const TEST_APPS = [
   { name: "請求書発行", url: "https://example.com/invoice", desc: "見積・請求書の作成と送付", tags: ["営業","経理"] }
 ];
 
-/* ================== ユーティリティ ================== */
 const $=(q,el=document)=>el.querySelector(q);
 const grid=$("#grid"), q=$("#q");
 
-/* ================== レンダリング ================== */
 function render(list=TEST_APPS){
   grid.innerHTML="";
   list.forEach((a,i)=>{
@@ -215,20 +228,19 @@ function render(list=TEST_APPS){
           <a class="btn ghost" href="${a.url}" target="_blank" rel="noopener">詳細</a>
         </div>
       </div>`;
-    el.onclick=(e)=>{ if(e.target.tagName!=="A") window.open(a.url,"_blank","noopener"); };
+    el.onclick=(e)=>{if(e.target.tagName!=="A")window.open(a.url,"_blank","noopener");};
     grid.appendChild(el);
   });
 }
 q.addEventListener("input",()=>{
   const kw=q.value.trim().toLowerCase();
-  const list = TEST_APPS.filter(a=>{
+  const list=TEST_APPS.filter(a=>{
     const hay=(a.name+" "+a.desc+" "+a.tags.join(" ")).toLowerCase();
-    return !kw || hay.includes(kw);
+    return !kw||hay.includes(kw);
   });
   render(list);
 });
 
-/* ================== Scroll Reveal（Appleっぽく） ================== */
 const io=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
@@ -242,21 +254,17 @@ document.querySelectorAll(".reveal").forEach(s=>{
   io.observe(s);
 });
 
-/* ================== Parallax (Hero背景) ================== */
-(()=>{ const hero=document.querySelector('.hero');
-  const onScroll=()=>{ const y=Math.min(40,Math.max(-40,window.scrollY*.12)); hero.style.setProperty('--pOffset',`${y}px`); };
-  onScroll(); document.addEventListener('scroll',onScroll,{passive:true});
+(()=>{const hero=document.querySelector('.hero');
+  const onScroll=()=>{const y=Math.min(40,Math.max(-40,window.scrollY*.12));hero.style.setProperty('--pOffset',`${y}px`);};
+  onScroll();document.addEventListener('scroll',onScroll,{passive:true});
 })();
 
-/* ================== PWA Install ================== */
-let deferredPrompt; const installBtn=$("#installBtn"); installBtn.style.display="none";
-window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display="inline-block"; });
-installBtn.addEventListener('click',async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt=null; installBtn.style.display="none"; });
+let deferredPrompt;const installBtn=$("#installBtn");installBtn.style.display="none";
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;installBtn.style.display="inline-block";});
+installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt=null;installBtn.style.display="none";});
 
-/* ================== 起動 ================== */
 render();
-if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js");
 </script>
 </body>
 </html>
-
