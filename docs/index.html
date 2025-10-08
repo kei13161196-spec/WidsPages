@@ -1,127 +1,96 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Company Hub</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="./icon-192.png">
-  <meta name="theme-color" content="#0b0d10">
-
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
+  <meta name="theme-color" content="#f4fff7" />
   <style>
-    /* ===== Theme: インク×ネオン（ダーク） ===== */
+    /* ===== Theme: ネオミント（明るい・新鮮） ===== */
     :root{
-      --bg:#0b0d10;           /* 背景 */
-      --text:#e9eef5;         /* 文字 */
-      --muted:#98a2b3;        /* 説明テキスト */
-      --accent:#6ee7ff;       /* アクセント（ボタン等） */
-      --card:#11151a;         /* カード背景 */
-      --line:#1d2430;         /* 枠線 */
-      --glass:rgba(255,255,255,.04);
-      --shadow:rgba(0,0,0,.35);
+      --bg:#f4fff7; --text:#14201a; --muted:#3b4a42;
+      --accent:#0ea5a5; --accent-ink:#ffffff;
+      --card:#ffffff; --line:#dbece3; --shadow:rgba(14,165,165,.15);
+      --glass:rgba(14,165,165,.06);
       --ease:cubic-bezier(.2,.7,.2,1);
     }
-
-    /* ===== Base ===== */
-    * { box-sizing: border-box; }
-    html, body {
-      margin:0; padding:0; background:var(--bg); color:var(--text);
-      font:16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
-      scroll-behavior:smooth;
-    }
-
-    /* ===== Header ===== */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif}
+    /* Header */
     header{
-      position:sticky; top:0; z-index:10;
-      display:flex; align-items:center; gap:14px; justify-content:space-between;
-      padding:14px 20px; border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(16,18,24,.85), rgba(16,18,24,.65));
-      backdrop-filter: blur(10px);
+      position:sticky;top:0;z-index:10;display:flex;gap:14px;align-items:center;justify-content:space-between;
+      padding:14px 20px;border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.65));
+      backdrop-filter:blur(10px)
     }
-    .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800}
     .logo img{height:22px}
-    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer;background:#0e1218}
-    .search{
-      flex:1 1 520px; max-width:820px;
-      background:#0e1218; border:1px solid var(--line); border-radius:12px; padding:10px 14px; color:var(--text);
-      outline:none;
-    }
-
-    /* ===== Hero with Parallax ===== */
-    .hero{
-      position:relative; overflow:hidden; padding:72px 20px 36px; margin:0 auto; max-width:1100px;
-    }
-    .hero::before{
-      content:""; position:absolute; inset:-25%;
-      background:
-        radial-gradient(60% 40% at 25% 25%, var(--glass), transparent 60%),
-        radial-gradient(50% 35% at 80% 70%, var(--glass), transparent 60%);
-      filter:blur(22px); z-index:-1; transform:translateY(var(--pOffset,0px));
-    }
-    .hero h1{font-size:32px;margin:0 0 8px}
+    .search{flex:1 1 520px;max-width:820px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+    .chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;cursor:pointer}
+    /* Hero */
+    .hero{max-width:1100px;margin:0 auto;padding:64px 20px 36px;text-align:center}
+    .hero h1{margin:0 0 10px;font-size:32px}
     .hero p{margin:0;color:var(--muted)}
-
-    /* ===== Sections ===== */
+    /* Section */
     section{max-width:1100px;margin:0 auto;padding:26px 20px}
-    h2.sec{font-size:18px;margin:12px 0 18px;color:#cfd8e3}
-
-    /* ===== Tags (optional filter look only) ===== */
+    h2.sec{font-size:18px;margin:12px 0 18px;color:#245652}
+    /* Tags (表示のみ) */
     .tags{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
-    .tag{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#0e1218;color:#c7d2fe}
-
-    /* ===== Grid & Cards ===== */
-    .grid{
-      display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px;
-    }
+    .tag{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:var(--glass);color:#245652}
+    /* Grid & Card */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
     .card{
-      background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card), #000 3%));
-      border:1px solid var(--line); border-radius:16px; padding:16px;
-      box-shadow: 0 10px 24px var(--shadow);
-      display:flex; flex-direction:column; gap:12px;
-      opacity:0; transform:translateY(10px) translateX(24px);
-      animation: slideIn .55s var(--ease) forwards;
+      background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--card),#000 3%));
+      border:1px solid var(--line);border-radius:16px;padding:16px;
+      box-shadow:0 10px 24px var(--shadow);display:flex;flex-direction:column;gap:12px;
+      opacity:0;transform:scale(.94) translateY(8px);will-change:transform
     }
+    .card:hover{transform:translateY(-2px)}
     .ttl{margin:0;font-size:18px;font-weight:700}
     .desc{color:var(--muted);font-size:14px}
     .badges{display:flex;flex-wrap:wrap;gap:8px}
-    .badge{border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px;color:#a3bffa;background:#0e1218}
+    .badge{border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px;color:#1b4744;background:var(--glass)}
     .row{display:flex;align-items:center;gap:10px}
     .btn{
-      appearance:none; border:1px solid var(--line); background:#0e1218; color:var(--text);
-      padding:8px 12px; border-radius:10px; cursor:pointer; text-decoration:none; display:inline-block;
-      transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease);
+      position:relative;overflow:hidden;
+      appearance:none;border:1px solid var(--line);background:var(--accent);color:var(--accent-ink);
+      padding:9px 14px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block
     }
-    .btn:hover{ border-color:#3aa0ff; box-shadow: 0 0 0 4px rgba(58,160,255,.15); }
-    .btn:active{ transform: translateY(1px) }
-    footer{color:#9aa4b2;text-align:center;padding:28px 10px;border-top:1px solid var(--line);margin-top:12px}
-
-    /* ===== Animations ===== */
-    @keyframes slideIn{
-      from{opacity:0; transform:translateY(10px) translateX(24px)}
-      to{opacity:1; transform:translateY(0) translateX(0)}
+    /* Ripple */
+    .btn:active::after{
+      content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;
+      background:#fff;opacity:.35;transform:translate(-50%,-50%);
+      animation:ripple .45s ease-out
     }
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none!important;transition:none!important}
+    @keyframes ripple{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(30);opacity:0}}
+    /* ScalePop entrance */
+    @keyframes scalePop{
+      0%{opacity:0;transform:scale(.94) translateY(8px)}
+      60%{opacity:1;transform:scale(1.02) translateY(0)}
+      100%{transform:scale(1)}
     }
+    footer{color:#4b5a53;text-align:center;padding:28px 10px;border-top:1px solid var(--line);margin-top:12px}
+    @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
-  <!-- ===== Header ===== -->
+  <!-- Header -->
   <header>
-    <div class="logo">
-      <img src="./icon-192.png" alt="logo"> <span>Company Hub</span>
-    </div>
-    <input id="q" class="search" type="search" placeholder="検索（例: 経費, 請求, 在庫）">
+    <div class="logo"><img src="./icon-192.png" alt="logo"><span>Company Hub</span></div>
+    <input id="q" class="search" type="search" placeholder="検索（例: 経費, 請求, 在庫）" />
     <button id="installBtn" class="chip">＋インストール</button>
   </header>
 
-  <!-- ===== Hero ===== -->
+  <!-- Hero -->
   <div class="hero">
-    <h1>社内アプリの入口はここだけ</h1>
-    <p>部署横断のWebアプリ、マニュアル、申請フォーム、ダッシュボードを一発検索。権限は各アプリ側SSOに委譲。</p>
+    <h1>必要な業務アプリに、気持ちよく最短到達。</h1>
+    <p>検索・タグ・お気に入りで迷わない。ワンクリックで起動。</p>
   </div>
 
-  <!-- ===== Apps ===== -->
+  <!-- Apps -->
   <section>
     <h2 class="sec">アプリ一覧</h2>
     <div class="tags" id="tags"></div>
@@ -131,7 +100,7 @@
   <footer>© Company. Powered by GitHub Pages + PWA</footer>
 
   <script>
-    /* ===== テストデータ ===== */
+    /* テストデータ */
     const TEST_APPS = [
       { name: "経費精算", url: "https://example.com/expense",   desc: "経費申請と承認フロー", tags: ["経理","申請"] },
       { name: "勤怠管理", url: "https://example.com/attendance", desc: "出退勤の登録・承認", tags: ["人事"] },
@@ -139,75 +108,57 @@
       { name: "請求書発行", url: "https://example.com/invoice", desc: "見積・請求書の作成と送付", tags: ["営業","経理"] }
     ];
 
-    /* ===== 検索 & レンダリング ===== */
-    const $ = (q, el=document)=>el.querySelector(q);
-    const $$ = (q, el=document)=>Array.from(el.querySelectorAll(q));
-    const grid = $("#grid"), tagWrap = $("#tags"), q = $("#q");
-    let active = new Set();
+    const $ = (q,el=document)=>el.querySelector(q);
+    const grid=$("#grid"), tagWrap=$("#tags"), q=$("#q");
+    let active=new Set();
 
-    function uniqTags(list){ const s=new Set(); list.forEach(a=>a.tags.forEach(t=>s.add(t))); return [...s]; }
+    function uniqTags(list){const s=new Set();list.forEach(a=>a.tags.forEach(t=>s.add(t)));return[...s];}
     function renderTags(){
-      tagWrap.innerHTML = "";
+      tagWrap.innerHTML="";
       uniqTags(TEST_APPS).forEach(t=>{
-        const b=document.createElement("button");
-        b.className="tag"; b.textContent=t;
-        b.onclick=()=>{ active.has(t)?active.delete(t):active.add(t); render(); };
+        const b=document.createElement("button"); b.className="tag"; b.textContent=t;
+        b.onclick=()=>{active.has(t)?active.delete(t):active.add(t); render();};
         tagWrap.appendChild(b);
       });
     }
-    function match(a, keyword){
+    function match(a,kw){
       const hay=(a.name+" "+a.desc+" "+a.tags.join(" ")).toLowerCase();
-      return !keyword || hay.includes(keyword);
+      return !kw || hay.includes(kw);
     }
     function render(){
-      const kw = q.value.trim().toLowerCase();
-      const list = TEST_APPS.filter(a => (!active.size || a.tags.some(t=>active.has(t))) && match(a,kw));
-      grid.innerHTML = "";
+      const kw=q.value.trim().toLowerCase();
+      const list=TEST_APPS.filter(a=>(!active.size||a.tags.some(t=>active.has(t)))&&match(a,kw));
+      grid.innerHTML="";
       list.forEach((a,i)=>{
         const card=document.createElement("div");
         card.className="card";
-        card.style.animationDelay = `${i*70}ms`;
-        card.innerHTML = `
+        card.style.animation=`scalePop .45s var(--ease) forwards`;
+        card.style.animationDelay=`${i*60}ms`;
+        card.innerHTML=`
           <h3 class="ttl">${a.name}</h3>
           <div class="desc">${a.desc||""}</div>
           <div class="badges">${a.tags.map(t=>`<span class="badge">${t}</span>`).join("")}</div>
-          <div class="row">
-            <a class="btn" href="${a.url}" target="_blank" rel="noopener">開く</a>
-          </div>`;
-        card.onclick = (e)=>{ if(e.target.tagName!=="A") window.open(a.url,"_blank","noopener"); };
+          <div class="row"><a class="btn" href="${a.url}" target="_blank" rel="noopener">開く</a></div>`;
+        card.onclick=e=>{if(e.target.tagName!=="A")window.open(a.url,"_blank","noopener");};
         grid.appendChild(card);
       });
       if(!list.length){
-        grid.innerHTML = `<div class="card" style="opacity:1;transform:none">
-          <h3 class="ttl">該当するアプリがありません</h3>
-          <div class="desc">キーワードやタグを変更して再検索してください。</div>
-        </div>`;
+        grid.innerHTML=`<div class="card" style="opacity:1;transform:none"><h3 class="ttl">該当なし</h3><div class="desc">キーワードやタグを変えてください。</div></div>`;
       }
     }
-    q.addEventListener("input", render);
+    q.addEventListener("input",render);
 
-    /* ===== Parallax（Hero背景の追従） ===== */
-    (() => {
-      const hero = document.querySelector('.hero');
-      if(!hero) return;
-      const onScroll = () => {
-        const y = Math.min(40, Math.max(-40, window.scrollY * 0.12));
-        hero.style.setProperty('--pOffset', `${y}px`);
-      };
-      onScroll();
-      document.addEventListener('scroll', onScroll, { passive:true });
-    })();
+    /* PWA Install */
+    let deferredPrompt;const installBtn=$("#installBtn");installBtn.style.display="none";
+    window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display="inline-block";});
+    installBtn.addEventListener("click",async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt=null;installBtn.style.display="none";});
 
-    /* ===== PWA Install ===== */
-    let deferredPrompt; const installBtn = $("#installBtn"); installBtn.style.display="none";
-    window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; installBtn.style.display="inline-block"; });
-    installBtn.addEventListener('click', async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt=null; installBtn.style.display="none"; });
-
-    /* ===== 起動 ===== */
+    /* 起動 */
     renderTags(); render();
 
-    /* ===== Service Worker 登録 ===== */
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+    /* SW */
+    if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
   </script>
 </body>
 </html>
+
